@@ -2,9 +2,34 @@
 
 dict=./assets/allwords.dat
 
+# An error exit function
+
+function error_exit
+{
+	echo "$1" #1>&2
+	exit 1
+}
+
+echo "Content-type: text/html"
+echo ""
+echo "<html>"
+echo "<head>"
+echo "<title>BASHy-Gen: Reverse Acronym Generator</title>"
+echo "</head>"
+echo '<body style="text-align:center">'
+echo '<div style="width:90%; height:40%; position: absolute; top:0; bottom:0; left: 0; right: 0; margin:auto;">'
+echo '<span style="font-size: 6.7vw"><a href="bashygen.cgi">BASHy-GEN</a></span>'
+
 unset bwords
-mapfile -t bwords <<< "$(grep '^[b,B][a-Z]' $dict)"
-bindex=$(/usr/bin/shuf -i 1-$((${#bwords[@]} - 1)) -n 1)
+if mapfile -t bwords <<< "$(grep '^[b,B][a-Z]' $dict)"; then
+	if bindex=$(/usr/bin/shuf -i 1-$((${#bwords[@]} - 1)) -n 1); then
+		sleep 0
+	else
+		error_exit "Could not use shuf, aborting."
+	fi
+else
+	error_exit "Could not grep into mapfile, aborting."
+fi
 
 unset awords
 mapfile -t awords <<< "$(grep '^[a,A][a-Z]' $dict)"
@@ -37,16 +62,8 @@ bighword="$(tr '[:lower:]' '[:upper:]' <<< ${hword:0:1})${hword:1}"
 yword=${ywords[yindex]}
 bigyword="$(tr '[:lower:]' '[:upper:]' <<< ${yword:0:1})${yword:1}"
 
-echo "Content-type: text/html"
-echo ""
-echo "<html>"
-echo "<head>"
-echo "<title>BASHy-Gen: Reverse Acronym Generator</title>"
-echo "</head>"
-echo '<body style="text-align:center">'
-echo '<div style="width:90%; height:40%; position: absolute; top:0; bottom:0; left: 0; right: 0; margin:auto;">'
-echo '<span style="font-size: 6.7vw"><a href="bashygen.cgi">BASHy-GEN</a></span>'
 echo '<br><span style="font-size: 3.5vw">'$bigbword $bigaword $bigsword $bighword $bigyword'</span>'
 echo "</div>"
 echo "</body>"
 echo "</html>"
+
