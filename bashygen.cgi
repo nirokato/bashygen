@@ -1,6 +1,6 @@
 #!/bin/sh
 
-dict=/meta/www/n/niro/assets/allwords.dat
+dict=./assets/allwords.dat
 
 unset bwords
 mapfile -t bwords <<< "$(grep '^[b,B][a-Z]' $dict)"
@@ -41,11 +41,11 @@ echo "Content-type: text/html"
 echo ""
 echo "<html>"
 echo "<head>"
-echo "<title>BASHy Reverse Acronym Generator</title>"
+echo "<title>BASHy-Gen: Reverse Acronym Generator</title>"
 echo "</head>"
 echo '<body style="text-align:center">'
 echo '<div style="width:90%; height:40%; position: absolute; top:0; bottom:0; left: 0; right: 0; margin:auto;">'
-echo '<span style="font-size: 6.7vw"><a href="bashy.cgi">BASHy-nym</a></span>'
+echo '<span style="font-size: 6.7vw"><a href="bashygen.cgi">BASHy-GEN</a></span>'
 echo '<br><span style="font-size: 3.5vw">'$bigbword $bigaword $bigsword $bighword $bigyword'</span>'
 echo "</div>"
 echo "</body>"
